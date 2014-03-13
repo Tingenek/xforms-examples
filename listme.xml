@@ -1,0 +1,131 @@
+<?xml-stylesheet href="xsltforms/xsltforms.xsl" type="text/xsl"?>
+<?xsltforms-options debug="no" ?>
+<?css-conversion no?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xf="http://www.w3.org/2002/xforms"
+	xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<head>
+
+		<title>Demo</title>
+		<link type="text/css" href="site.css" rel="stylesheet" />
+
+		<xf:model>
+
+			<xf:instance id="results">
+				<root />
+			</xf:instance>
+
+			<xf:instance xmlns="" id="query">
+				<data>
+					<action>query</action>
+					<list>search</list>
+					<srprop>snippet</srprop>
+					<srsearch>xforms</srsearch>
+					<format>json</format>
+					<sroffset>0</sroffset>
+					<srlimit>10</srlimit>
+				</data>
+			</xf:instance>
+
+			<xf:submission id="search" method="get" replace="instance"
+				mode="synchronous" instance="results" ref="instance('query')"
+				action="http://en.wikipedia.org/w/api.php" mediatype="text/jsonp">	
+										
+			</xf:submission>
+
+			<xf:action ev:event="xforms-ready">
+				<xf:send submission="search" />
+			</xf:action>
+
+
+		</xf:model>
+	</head>
+	<body>
+
+		<xf:group ref="instance('query')" navindex="0">
+
+			<!-- ESC Key -->
+			<xf:action ev:event="keydown" if="event('keyCode') = 27">
+				<xf:setvalue ref="srsearch" value="''"/>
+			</xf:action>
+			
+			<!-- RETURN -->
+			<xf:action ev:event="keydown" if="event('keyCode') = 13">
+				<xf:dispatch targetid="searchme" name="DOMActivate" ev:event="DOMActivate"/>
+			</xf:action>
+	
+			<xf:input ref='srsearch' incremental='false'/>
+			<xf:trigger id="searchme">
+				<xf:label>Search</xf:label>
+				<xf:action ev:event="DOMActivate">
+					<xf:setvalue ref="instance('query')/sroffset" value="0"/>
+					<xf:send submission="search" />
+				</xf:action>
+			</xf:trigger>
+
+			
+		</xf:group>
+
+
+		<xf:group ref="instance('results')" navindex="1">
+		
+			<xf:action ev:event="keydown" ev:defaultAction="cancel"
+				if="event('keyCode') = 40">
+				<xf:dispatch targetid="list_next" name="DOMActivate" ev:event="DOMActivate" if="index('resultslist') = 10" />
+				<xf:setindex repeat="resultslist" index="index('resultslist') +1"  if="index('resultslist') &lt;= 9"/>
+			</xf:action>
+			
+			<xf:action ev:event="keydown" ev:defaultAction="cancel"
+				if="event('keyCode') = 38">
+				<xf:dispatch targetid="list_prev" name="DOMActivate" ev:event="DOMActivate" if="index('resultslist') = 1" />
+				<xf:setindex repeat="resultslist" index="index('resultslist') -1" if="index('resultslist') &gt;= 1"/>
+			</xf:action>
+
+			
+			<div  class="title">
+			<h2>Wikipedia Results</h2>
+			<span style="float:right;">
+				Items
+				<xf:output value="concat(instance('query')/sroffset + 1,'&#8594;',
+				query-continue/search/sroffset,' of ',query/searchinfo/totalhits)" />
+			</span>	
+			</div>
+			
+			<div class="divtable">
+				<div class="headrow">
+					<div class="divcol">Title</div>
+					<div class="divcol wide">Snippet</div>
+				</div>
+				<xf:repeat nodeset="query/search" id="resultslist">
+					<div class="divrow">
+						<div class="divcell">
+							<xf:output value="title" />
+						</div>
+						<div class="divcell">
+							<xf:output value="snippet" mediatype="application/xhtml+xml" />
+						</div>
+					</div>
+				</xf:repeat>
+			</div>
+			
+			<hr />
+			<xf:trigger id="list_next">
+				<xf:label>Next</xf:label>
+				<xf:action ev:event="DOMActivate" if="instance('results')/query-continue/search/sroffset">
+					<xf:setvalue ref="instance('query')/sroffset"
+						value="instance('results')/query-continue/search/sroffset" />
+					<xf:send submission="search" />
+				</xf:action>
+			</xf:trigger>
+			<xf:trigger id="list_prev">
+				<xf:label>Prev</xf:label>
+				<xf:action ev:event="DOMActivate" if="instance('query')/sroffset &gt;= 10">
+					<xf:setvalue ref="instance('query')/sroffset" value="instance('query')/sroffset - 10" />
+					<xf:send submission="search" />		
+				</xf:action>
+			</xf:trigger>
+			
+		</xf:group>
+		<hr />
+	</body>
+</html>	
