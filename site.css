@@ -1,0 +1,76 @@
+
+html,body,div,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,p,blockquote,fieldset,input
+	{
+	margin: 0;
+	padding: 0;
+}
+
+body { 
+padding:10px;
+font-family: monospace;
+}
+
+.title {
+  width:600px;
+  margin:5px 0px;
+}
+.title h2 {
+text-align:center;
+display:inline-block;
+}
+
+input {
+    width:220px;
+    font-family: monospace;
+    margin:5px 0px;
+}
+
+/* stops a blue edge to focussed controls */
+*:focus {
+    outline: 0;
+}
+
+/* wikipedia search highlight */ 
+.searchmatch {
+color:blue;
+}
+
+.divtable
+{
+    display:table;
+    width:600px;
+}
+.divrow
+{
+    display:table-row;
+    margin-bottom:10px;
+}
+.divcol
+{
+    display:table-cell;
+    min-width:120px;
+    padding-right:10px;
+}
+.headrow
+{
+    display:table-caption;
+	background-color:#000000;
+	color: #e6e6e6;
+	padding:5px 0px;
+}
+.divcell
+{
+    display:table-cell;
+    min-width:120px;
+    padding-right:10px;
+}
+
+.wide
+{
+    min-width:200px;
+}
+
+
+.divtable .xforms-repeat-item-selected {
+	background-color:#e6e6e6;
+	}
