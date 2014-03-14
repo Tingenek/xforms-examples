@@ -29,8 +29,7 @@
 
 			<xf:submission id="search" method="get" replace="instance"
 				mode="synchronous" instance="results" ref="instance('query')"
-				action="http://en.wikipedia.org/w/api.php" mediatype="text/jsonp">	
-										
+				action="http://en.wikipedia.org/w/api.php" mediatype="text/jsonp">										
 			</xf:submission>
 
 			<xf:action ev:event="xforms-ready">
@@ -51,7 +50,7 @@
 			
 			<!-- RETURN -->
 			<xf:action ev:event="keydown" if="event('keyCode') = 13">
-				<xf:dispatch targetid="searchme" name="DOMActivate" ev:event="DOMActivate"/>
+				<xf:dispatch targetid="searchme" name="DOMActivate"/>
 			</xf:action>
 	
 			<xf:input ref='srsearch' incremental='false'/>
@@ -71,13 +70,13 @@
 		
 			<xf:action ev:event="keydown" ev:defaultAction="cancel"
 				if="event('keyCode') = 40">
-				<xf:dispatch targetid="list_next" name="DOMActivate" ev:event="DOMActivate" if="index('resultslist') = 10" />
+				<xf:dispatch targetid="list_next" name="DOMActivate" if="index('resultslist') = 10" />
 				<xf:setindex repeat="resultslist" index="index('resultslist') +1"  if="index('resultslist') &lt;= 9"/>
 			</xf:action>
 			
 			<xf:action ev:event="keydown" ev:defaultAction="cancel"
 				if="event('keyCode') = 38">
-				<xf:dispatch targetid="list_prev" name="DOMActivate" ev:event="DOMActivate" if="index('resultslist') = 1" />
+				<xf:dispatch targetid="list_prev" name="DOMActivate" if="index('resultslist') = 1" />
 				<xf:setindex repeat="resultslist" index="index('resultslist') -1" if="index('resultslist') &gt;= 1"/>
 			</xf:action>
 
