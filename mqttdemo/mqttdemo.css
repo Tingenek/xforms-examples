@@ -1,0 +1,124 @@
+
+html,body,div,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,p,blockquote,fieldset,input
+	{
+	margin: 0;
+	padding: 0;
+}
+
+body { 
+padding:10px;
+font-family: monospace;
+}
+
+.title {
+  width:600px;
+  margin:5px 0px;
+}
+.title h2 {
+text-align:center;
+display:inline-block;
+}
+
+input {
+    width:220px;
+    font-family: monospace;
+    margin:5px 0px;
+}
+
+
+
+/* stops a blue edge to focussed controls */
+*:focus {
+    outline: 0;
+}
+
+.xforms-group {
+	display: table;
+	padding: 2px;
+}
+
+.xforms-input {
+	display: table-row;
+}
+
+.xforms-output {
+	display: table-row;
+}
+
+.xforms-select1 {
+	display: table-row;
+}
+
+/* each label within an input is a cell in the input row */
+.xforms-input .xforms-label {
+	text-align: right;
+	display: table-cell;
+	min-width:70px;
+}
+
+.xforms-output .xforms-label {
+	text-align: right;
+	display: table-cell;
+	min-width:70px;
+}
+
+.xforms-trigger .xforms-label {
+	text-align: center;
+	display: table-cell;
+	font-family: monospace;
+}
+
+.xforms-select1 .xforms-label {
+	text-align: right;
+	display: table-cell;
+	font-family: monospace;
+	min-width:10px;
+}
+
+/* each value (pseudo-element) is also a cell in the input row */
+.xforms-input .xforms-value {
+	text-align: left;
+	display: table-cell;
+	padding:2px;
+	margin-left:2px;
+}
+
+/* each value (pseudo-element) is also a cell in the input row */
+.xforms-output .xforms-value {
+	text-align: left;
+	display: table-cell;
+	padding:2px;
+	margin-left:2px;
+}
+
+/* each value (pseudo-element) is also a cell in the input row 
+.xforms-select1 .xforms-value {
+	text-align: left;
+	display: table-cell;
+	padding:2px;
+	margin-left:2px;
+	width:70px;
+}
+
+.xforms-select1 .xforms-item-label {
+	text-align: left;
+	display: table-cell;
+	padding:2px;
+	margin-left:2px;
+}
+*/
+
+.connected .xforms-value{
+	color:white;
+	background-color:green;
+}
+
+.disconnected .xforms-value{
+color:white;
+	background-color:red;
+}
+
+.horiz{
+	float:left;
+}
+

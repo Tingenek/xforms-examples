@@ -1,0 +1,109 @@
+<?xml-stylesheet href="../xsltforms/xsltforms.xsl" type="text/xsl"?>
+<?xsltforms-options debug="no" ?>
+<?css-conversion no?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xf="http://www.w3.org/2002/xforms"
+	xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<head>
+
+		<title>MQTT Demo V1</title>
+		<link type="text/css" href="mqttdemo.css" rel="stylesheet" />
+
+		<xf:model id="modelid">
+
+			<xf:instance id="connection" xmlns="">
+				<data>
+					<host>broker.mqttdashboard.com</host>
+					<port>8000</port>
+					<clientId>xsltforms</clientId>
+					<initialtopic>xforms/chat</initialtopic>
+					<status>disconnected</status>
+					<message></message>
+				</data>
+			</xf:instance>
+			
+			<!-- Randon ClientId -->
+			<xf:action ev:event="xforms-ready">
+				<xf:setvalue ref="clientId" value="concat('XF',substring(string(random()),12))" />
+			</xf:action>
+					
+		</xf:model>
+	</head>
+	<body>
+		<div class="title">
+			<h2>MQTT Demo V1</h2>
+		</div>
+		<xf:group ref="instance('connection')" navindex="0">
+			<xf:input ref='host' incremental='false'>
+				<xf:label>Host: </xf:label>
+			</xf:input>
+			<xf:input ref="port">
+				<xf:label>Port: </xf:label>
+			</xf:input>
+			<xf:input ref="clientId">
+				<xf:label>ClientId: </xf:label>
+			</xf:input>
+			<xf:input ref="status">
+				<xf:label>Status: </xf:label>
+			</xf:input>
+			<xf:trigger id="mqttconnect">
+				<xf:label>Connect</xf:label>
+				<xf:load ev:event="DOMActivate">
+					<xf:resource
+						value="concat('javascript:mqttstart(&quot;',host,'&quot;,&quot;',port,'&quot;,&quot;',clientId,'&quot;,&quot;',initialTopic,'&quot;)')" />
+				</xf:load>
+			</xf:trigger>
+			<xf:trigger id="mqttdisconnect">
+				<xf:label>Disconnect</xf:label>
+				<xf:load ev:event="DOMActivate">
+					<xf:resource
+						value="javascript:mqttstop()" />
+				</xf:load>
+			</xf:trigger>
+
+		</xf:group>
+
+		<hr />
+		<script src="mqttws31.js"></script>
+		<script>
+ 
+ var client;
+
+/* Functions called by XForm triggers
+ * 
+ */
+
+function mqttstart(host,port,clientId,initialTopic) {	
+	client = new Messaging.Client(host, Number(port), clientId);
+	client.onConnectionLost = onConnectionLost; 
+	 
+	var options = {
+		     timeout: 30,
+		     onSuccess:onConnect,
+		     onFailure:onFailure 
+		 };
+    client.connect(options);
+};
+
+function mqttstop() {
+	   client.disconnect();
+};
+
+/* Callbacks called by MQTT
+ * 
+ */
+
+function onConnect() {
+	alert('Connected');
+};
+
+function onFailure() {
+	alert('Failed');
+};
+
+function onConnectionLost(responseObject) {
+	alert(client.clientId + " disconnected: " + responseObject.errorCode);
+};		    
+		</script>
+	</body>
+</html>	
