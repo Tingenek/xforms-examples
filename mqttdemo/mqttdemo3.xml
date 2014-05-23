@@ -146,15 +146,16 @@ var client;
  * 
  */
 
-function mqttstart(host,port,clientId) {	
+function mqttstart(host,port,clientId,cleanSession) {	
 	client = new Messaging.Client(host, Number(port), clientId);
 	client.onMessageArrived = onMessageArrived;
 	client.onConnectionLost = onConnectionLost;            
 
 	var options = {
-		     timeout: 30,
+		     timeout: 10,
 		     onSuccess:onConnect,
-		     onFailure:onFailure 
+		     onFailure:onFailure,
+		     cleanSession: Boolean(cleanSession) 
 		 };
     client.connect(options);
 };
@@ -193,13 +194,13 @@ function onConnect() {
 	call_xform_event("mqtt_set_status",{status:  "connected"});
 };
 
-function onFailure() {
-	alert('Failed');
+function onFailure(responseObject) {
+	 alert(client.clientId + ": " + responseObject.errorMessage);
 };
 
 function onConnectionLost(responseObject) {
 	 if (responseObject.errorCode !== 0) {
-	        alert(client.clientId + ": " + responseObject.errorCode);
+	        alert(client.clientId + ": " + responseObject.errorMessage);
 	 } else {
 	//We dsconnected	 
 		 	call_xform_event("mqtt_set_status",{status:  "disconnected"})
